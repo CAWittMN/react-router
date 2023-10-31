@@ -1,25 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { useState } from "react";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import Backpack from "./components/Backpack";
+import VendingMachine from "./components/VendingMachine";
 
-function App() {
+import NavBar from "./components/NavBar";
+import "bootstrap/dist/css/bootstrap.css";
+
+const App = () => {
+  const [mySnacks, setMySnacks] = useState([]);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <BrowserRouter>
+        <NavBar snacksNum={mySnacks.length} />
+        <Routes>
+          <Route
+            exact
+            path="/vend"
+            element={<VendingMachine onSelect={setMySnacks} />}
+          />
+          <Route
+            exact
+            path="/backpack"
+            element={<Backpack mySnacks={mySnacks} eatSnack={setMySnacks} />}
+          />
+          <Route path="*" element={<Navigate to="/vend" />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
-}
+};
 
 export default App;
